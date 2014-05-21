@@ -8,6 +8,7 @@ package plura;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -40,6 +41,8 @@ public class mainForm extends javax.swing.JFrame {
         doSmthPlur = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tabs.setMinimumSize(new java.awt.Dimension(5, 100));
 
         chooseActionCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "New", "Intersect", "Join" }));
         chooseActionCB.addActionListener(new java.awt.event.ActionListener() {
@@ -91,7 +94,7 @@ public class mainForm extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -106,6 +109,7 @@ public class mainForm extends javax.swing.JFrame {
         switch (st) {
             case "New": {
                 doSmthPlur.addActionListener(ae -> addNewPlur());
+                
                 break;
             }
 
@@ -125,42 +129,37 @@ public class mainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseActionCBActionPerformed
     private void Instersect() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
-        Integer last = getnextPlurNum(model);
+
         String pluraName = "Instersect " + last;
         model.addElement(pluraName);
     }
 
     private void Join() {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
-        PluraPane active = (PluraPane) tabs.getSelectedComponent();
-        Plurality fst = active.getPlur();
 
-        PluraPane target = (PluraPane) tabs.getComponentAt(myPlrsBox.getSelectedIndex());
-        Plurality snd = target.getPlur();
+        PluraPane activeP, targetP, resultP;
+        activeP = (PluraPane) tabs.getSelectedComponent();
+        targetP = (PluraPane) tabs.getComponentAt(myPlrsBox.getSelectedIndex());
+
+        Plurality fst, snd;
+        fst = activeP.getPlur();
+        snd = targetP.getPlur();
         Plurality result = fst.join(snd);
-        String pluraName = "Join (" + fst.toString() + "," + snd.toString() + ")";
-        PluraPane nplp = new PluraPane(pluraName, fst.join(snd));
+
+        String pluraName = "Join (" + activeP.getName() + "," + targetP.getName() + ")";
+        resultP = new PluraPane(pluraName, result);
+        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
         model.addElement(pluraName);
-        tabs.add(nplp);
+        tabs.add(resultP);
         tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
         tabs.getParent().revalidate();
     }
 
-    private Integer getnextPlurNum(DefaultComboBoxModel model) {
-        int last = model.getSize() - 1;
-        String npl = (String) model.getElementAt(last);
-        npl = npl.substring(5, npl.length()).trim();
-        int inpl = Integer.valueOf(npl) + 1;
-        return inpl;
-
-    }
-    Integer last = 1;
+    private Integer last = 1;
 
     private void addNewPlur() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
-
         String pluraName = "Plur " + last;
-
+        last++;
         model.addElement(pluraName);
         PluraPane pp = new PluraPane(pluraName);
         tabs.add(pp);
@@ -216,12 +215,14 @@ public class mainForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void myInit() {
-        PluraPane pp = new PluraPane("Plur 1");
+        PluraPane pp = new PluraPane("Plur " + last);
         tabs.add(pp);
         DefaultComboBoxModel model = new DefaultComboBoxModel((new Vector()));
-        model.addElement("Plur 1");
-        tabs.setTitleAt(0, "Plur 1");
+        model.addElement("Plur " + last);
+        tabs.setTitleAt(0, "Plur " + last);
+        last++;
         myPlrsBox.setModel(model);
+        doSmthPlur.addActionListener(ae -> addNewPlur());
         java.awt.EventQueue.invokeLater(() -> {
             tabs.getParent().revalidate();
         });
