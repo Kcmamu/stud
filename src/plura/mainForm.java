@@ -5,7 +5,8 @@
  */
 package plura;
 
-import java.util.ArrayList;
+import java.awt.Button;
+import java.awt.event.ActionEvent;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 
@@ -20,6 +21,7 @@ public class mainForm extends javax.swing.JFrame {
      */
     public mainForm() {
         initComponents();
+        myInit();
     }
 
     /**
@@ -32,20 +34,47 @@ public class mainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         tabs = new javax.swing.JTabbedPane();
-        doSmthPlur = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        jPanel1 = new javax.swing.JPanel();
         myPlrsBox = new javax.swing.JComboBox();
+        chooseActionCB = new javax.swing.JComboBox();
+        doSmthPlur = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        doSmthPlur.setText("Add Plarality");
-        doSmthPlur.addActionListener(new java.awt.event.ActionListener() {
+        chooseActionCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "New", "Intersect", "Join" }));
+        chooseActionCB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doSmthPlurActionPerformed(evt);
+                chooseActionCBActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "New", "Intersect", "Join" }));
+        doSmthPlur.setText("Add Plurality");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(doSmthPlur, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(chooseActionCB, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(myPlrsBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chooseActionCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(myPlrsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(doSmthPlur)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -54,47 +83,93 @@ public class mainForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabs)
-                    .addComponent(doSmthPlur, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(myPlrsBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(myPlrsBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(doSmthPlur)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void doSmthPlurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doSmthPlurActionPerformed
-            
-        java.awt.EventQueue.invokeLater(() -> {
-            tabs.getParent().revalidate();
-        });
-    }//GEN-LAST:event_doSmthPlurActionPerformed
-    private void addNewPlur() {
-        PluraPane pp = new PluraPane();
-        tabs.add(pp);
+    private void chooseActionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseActionCBActionPerformed
+        String st = (String) chooseActionCB.getSelectedItem();
+        doSmthPlur.setText(st);
+        switch (st) {
+            case "New": {
+                doSmthPlur.addActionListener(ae -> addNewPlur());
+                break;
+            }
+
+            case "Intersect": {
+                break;
+            }
+            case "Join": {
+                doSmthPlur.addActionListener(ae -> Join());
+                break;
+            }
+
+            default:
+                throw new AssertionError();
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chooseActionCBActionPerformed
+    private void Instersect() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
-        String npl = (String) model.getElementAt(model.getSize());
-        npl = npl.substring(5).trim();
-        int inpl = Integer.getInteger(npl) + 1;
-        npl = Integer.toString(inpl);
-        model.addElement("Plur " + npl);
-        myPlrsBox.setModel(model);
+        Integer last = getnextPlurNum(model);
+        String pluraName = "Instersect " + last;
+        model.addElement(pluraName);
+    }
+
+    private void Join() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
+        PluraPane active = (PluraPane) tabs.getSelectedComponent();
+        Plurality fst = active.getPlur();
+
+        PluraPane target = (PluraPane) tabs.getComponentAt(myPlrsBox.getSelectedIndex());
+        Plurality snd = target.getPlur();
+        Plurality result = fst.join(snd);
+        String pluraName = "Join (" + fst.toString() + "," + snd.toString() + ")";
+        PluraPane nplp = new PluraPane(pluraName, fst.join(snd));
+        model.addElement(pluraName);
+        tabs.add(nplp);
+        tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
+        tabs.getParent().revalidate();
+    }
+
+    private Integer getnextPlurNum(DefaultComboBoxModel model) {
+        int last = model.getSize() - 1;
+        String npl = (String) model.getElementAt(last);
+        npl = npl.substring(5, npl.length()).trim();
+        int inpl = Integer.valueOf(npl) + 1;
+        return inpl;
+
+    }
+    Integer last = 1;
+
+    private void addNewPlur() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
+
+        String pluraName = "Plur " + last;
+
+        model.addElement(pluraName);
+        PluraPane pp = new PluraPane(pluraName);
+        tabs.add(pp);
+        tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
+        tabs.getParent().revalidate();
+    }
+
+    public void print(String npl) {
+        System.out.println(npl);
     }
 
     /**
@@ -133,17 +208,19 @@ public class mainForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox chooseActionCB;
     private javax.swing.JButton doSmthPlur;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox myPlrsBox;
     private javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 
     void myInit() {
-        PluraPane pp = new PluraPane();
+        PluraPane pp = new PluraPane("Plur 1");
         tabs.add(pp);
         DefaultComboBoxModel model = new DefaultComboBoxModel((new Vector()));
         model.addElement("Plur 1");
+        tabs.setTitleAt(0, "Plur 1");
         myPlrsBox.setModel(model);
         java.awt.EventQueue.invokeLater(() -> {
             tabs.getParent().revalidate();
