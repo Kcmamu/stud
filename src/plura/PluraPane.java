@@ -5,6 +5,11 @@
  */
 package plura;
 
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.HashSet;
+
 /**
  *
  * @author Kandit
@@ -16,9 +21,20 @@ public class PluraPane extends javax.swing.JPanel {
     /**
      * Creates new form plaraPane
      */
-    public PluraPane() {
+    PluraPane(String name) {
         initComponents();
+        this.setName(name);
+        nameLabel.setText(name);
         pl = new arrayBasedPlur();
+
+    }
+
+    PluraPane(String name, Plurality pl) {
+        initComponents();
+        this.setName(name);
+        nameLabel.setText(name);
+        this.pl = pl;
+        addToView();
 
     }
 
@@ -31,13 +47,23 @@ public class PluraPane extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        addElemBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        elemList = new javax.swing.JList();
+        elemListPane = new javax.swing.JPanel();
+        nameLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        addElemBtn = new javax.swing.JButton();
         elemAddField = new javax.swing.JTextField();
-        remElemBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         typeCbox = new javax.swing.JComboBox();
+        remElemBtn = new javax.swing.JButton();
+        statusLbl = new javax.swing.JLabel();
+
+        elemListPane.setLayout(new java.awt.GridLayout(0, 1));
+        jScrollPane2.setViewportView(elemListPane);
+
+        nameLabel.setText("   ");
+        nameLabel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         addElemBtn.setText("Add Element");
         addElemBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -46,7 +72,7 @@ public class PluraPane extends javax.swing.JPanel {
             }
         });
 
-        jScrollPane2.setViewportView(elemList);
+        typeCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "String", "Int", "Float" }));
 
         remElemBtn.setText("Remove");
         remElemBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -55,10 +81,39 @@ public class PluraPane extends javax.swing.JPanel {
             }
         });
 
-        jLabel1.setText("   ");
-        jLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        typeCbox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "String", "Int", "Float" }));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(remElemBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addElemBtn, javax.swing.GroupLayout.Alignment.LEADING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(typeCbox, 0, 67, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(elemAddField, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(statusLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(remElemBtn)
+                    .addComponent(statusLbl))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(elemAddField)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(addElemBtn)
+                        .addComponent(typeCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -68,34 +123,29 @@ public class PluraPane extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(remElemBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(addElemBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(typeCbox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(elemAddField, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(nameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addComponent(jLabel1)
+                .addComponent(nameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(remElemBtn)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addElemBtn)
-                    .addComponent(elemAddField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(typeCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addToView() {
+        for (Elem el : pl) {
+            ElementPane ep = new ElementPane(el);
+            elemListPane.add(ep);
+        }
+    }
 
     private void addElemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addElemBtnActionPerformed
         String st = elemAddField.getText().trim();
@@ -108,7 +158,7 @@ public class PluraPane extends javax.swing.JPanel {
                     break;
                 }
                 case "Int": {
-                    el = new Elem(new Integer(Integer.getInteger(st)));
+                    el = new Elem(new Integer(Integer.valueOf(st)));
                     break;
                 }
                 case "Float": {
@@ -118,30 +168,66 @@ public class PluraPane extends javax.swing.JPanel {
                 default:
             }
             if (el != null) {
-                elemList.add(new elementPane(el));
-                elemList.revalidate();
+                if (pl.add(el)) {
+                    this.statusLbl.setText("Элемент '" + el.toString() + "' добавлен");
+                    elemListPane.add(new ElementPane(el));
+                    elemAddField.requestFocus();
+                    elemAddField.setText("");
+                    elemListPane.revalidate();
+                } else {
+                    statusLbl.setText("Элемент '" + el.toString() + "' не добавлен, повтор");
+                    // statusLbl.getParent().revalidate();
+                }
+
             }
 
         }
     }//GEN-LAST:event_addElemBtnActionPerformed
 
+//            int[] sel = elemList.getSelectedIndices();
+//        for (int i = 0; i < sel.length; i++) {
+//            elemList.remove(sel[i]);
+//        }
+//        elemList.revalidate();
+
     private void remElemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remElemBtnActionPerformed
-        int[] sel = elemList.getSelectedIndices();
-        for (int i = 0; i < sel.length; i++) {
-            elemList.remove(sel[i]);
+        ArrayList<Elem> a = new ArrayList();
+        for (Component comp : elemListPane.getComponents()) {
+            ElementPane s = (ElementPane) comp;
+            if (s.isChecked) {
+                a.add(s.el);
+
+            }
         }
-        elemList.revalidate();
+        pl.removeAll(a);
+        EventQueue.invokeLater(() -> {
+            a.stream().forEach((Elem _item) -> {
+                elemListPane.remove(_item.getName());
+            });
+
+        });
+
+//        int[] sel = elemList.getSelectedIndices();
+//        for (int i = 0; i < sel.length; i++) {
+//            elemList.remove(sel[i]);
+//        }
+//        elemList.revalidate();
     }//GEN-LAST:event_remElemBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addElemBtn;
     private javax.swing.JTextField elemAddField;
-    private javax.swing.JList elemList;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel elemListPane;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel nameLabel;
     private javax.swing.JButton remElemBtn;
+    private javax.swing.JLabel statusLbl;
     private javax.swing.JComboBox typeCbox;
     // End of variables declaration//GEN-END:variables
+
+    Plurality getPlur() {
+        return this.pl;
+    }
 }
