@@ -52,6 +52,9 @@
           <Dimension value="[5, 100]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tabsStateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>
@@ -96,6 +99,12 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="myPlrsBoxActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new DisableItemComboBox()"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JComboBox" name="chooseActionCB">
           <Properties>
@@ -113,8 +122,11 @@
         </Component>
         <Component class="javax.swing.JButton" name="doSmthPlur">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Add Plurality"/>
+            <Property name="text" type="java.lang.String" value="New"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="doSmthPlurActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

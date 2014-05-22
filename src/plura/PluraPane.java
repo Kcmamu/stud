@@ -8,6 +8,7 @@ package plura;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -60,6 +61,7 @@ public class PluraPane extends javax.swing.JPanel {
         elemListPane.setLayout(new java.awt.GridLayout(0, 1));
         jScrollPane2.setViewportView(elemListPane);
 
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nameLabel.setText("   ");
         nameLabel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -80,6 +82,9 @@ public class PluraPane extends javax.swing.JPanel {
                 remElemBtnActionPerformed(evt);
             }
         });
+
+        statusLbl.setFont(new java.awt.Font("Dialog", 2, 12)); // NOI18N
+        statusLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -103,9 +108,9 @@ public class PluraPane extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(remElemBtn)
-                    .addComponent(statusLbl))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(remElemBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(statusLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(elemAddField)
@@ -193,25 +198,12 @@ public class PluraPane extends javax.swing.JPanel {
     private void remElemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remElemBtnActionPerformed
         ArrayList<Elem> a = new ArrayList();
         for (Component comp : elemListPane.getComponents()) {
-            ElementPane s = (ElementPane) comp;
-            if (s.isChecked) {
-                a.add(s.el);
-
+            ElementPane ep = (ElementPane) comp;
+            if (ep.isChecked) {
+                pl.remove(ep.el);
+                elemListPane.remove(ep);
             }
         }
-        pl.removeAll(a);
-        EventQueue.invokeLater(() -> {
-            a.stream().forEach((Elem _item) -> {
-                elemListPane.remove(_item.getName());
-            });
-
-        });
-
-//        int[] sel = elemList.getSelectedIndices();
-//        for (int i = 0; i < sel.length; i++) {
-//            elemList.remove(sel[i]);
-//        }
-//        elemList.revalidate();
     }//GEN-LAST:event_remElemBtnActionPerformed
 
 

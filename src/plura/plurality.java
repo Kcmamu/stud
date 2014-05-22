@@ -15,8 +15,6 @@ import java.util.Iterator;
  *
  * @author Kandit
  */
-
-
 class Elem {
 
     Class type;
@@ -29,10 +27,12 @@ class Elem {
 
     @Override
     public boolean equals(Object o) {
-        if ((o instanceof Elem == false) || (((Elem) o).val.getClass() != this.type)) {
+        if ((o instanceof Elem == false)
+                || (((Elem) o).val.getClass() != this.type)) {
             return false;
+        } else {
         }
-        return val.equals(o);
+        return val.equals(((Elem) o).val);
 
     }
 
@@ -66,18 +66,32 @@ abstract class Plurality implements Iterable<Elem> {
     abstract Plurality join(Plurality l);
 
     abstract Plurality intersection(Plurality l);
+    abstract boolean removeAll(Collection torm);
+    abstract boolean remove(Elem torm);
 }
 
 class arrayBasedPlur extends Plurality {
 
     arrayBasedPlur() {
-        storage = new ArrayList<Elem>();
+        storage = new ArrayList<>();
 
     }
 
     @Override
     boolean isEmpty() {
         return storage.isEmpty();
+    }
+
+    @Override
+    boolean remove(Elem el) {
+        return storage.remove(el);
+    }
+    
+    
+    
+    @Override
+    boolean removeAll(Collection st) {
+        return storage.removeAll(st);
     }
 
     @Override
@@ -132,7 +146,7 @@ class arrayBasedPlur extends Plurality {
     Plurality intersection(Plurality l) {
         Plurality plur = new arrayBasedPlur();
         for (Elem el : l) {
-            if(this.contains(el)){
+            if (this.contains(el)) {
                 plur.add(el);
             }
         }
@@ -141,4 +155,3 @@ class arrayBasedPlur extends Plurality {
 
     // Deep clone member fields here
 }
-

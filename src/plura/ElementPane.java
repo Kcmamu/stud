@@ -10,16 +10,18 @@ package plura;
  *
  * @author Kandit
  */
-public class elementPane extends javax.swing.JPanel {
+public class ElementPane extends javax.swing.JPanel {
     Elem el;
+     boolean isChecked = false;
     /**
      * Creates new form elementPane
+     * @param el
      */
-    public elementPane(Elem el) {
+     ElementPane(Elem el) {
         initComponents();
         this.el = el;
         stringRepr.setText(el.toString());
-        typeField.setText(el.getClass().getSimpleName());
+        typeField.setText(el.type.getSimpleName());
     }
 
     /**
@@ -33,29 +35,51 @@ public class elementPane extends javax.swing.JPanel {
 
         stringRepr = new javax.swing.JTextField();
         typeField = new javax.swing.JTextField();
+        checkedBox = new javax.swing.JCheckBox();
+
+        setMaximumSize(new java.awt.Dimension(32767, 40));
+        setMinimumSize(new java.awt.Dimension(0, 40));
 
         stringRepr.setEditable(false);
+        stringRepr.setBorder(null);
 
         typeField.setEditable(false);
+        typeField.setBorder(null);
+
+        checkedBox.setBorder(null);
+        checkedBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkedBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(stringRepr, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                .addComponent(stringRepr, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(typeField, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkedBox, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(typeField, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-            .addComponent(stringRepr)
+            .addComponent(stringRepr, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(checkedBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(typeField)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void checkedBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkedBoxActionPerformed
+    this.isChecked = checkedBox.isSelected();
+            // TODO add your handling code here:
+    }//GEN-LAST:event_checkedBoxActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox checkedBox;
     private javax.swing.JTextField stringRepr;
     private javax.swing.JTextField typeField;
     // End of variables declaration//GEN-END:variables

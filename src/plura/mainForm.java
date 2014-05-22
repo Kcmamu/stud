@@ -6,10 +6,18 @@
 package plura;
 
 import java.awt.Button;
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTabbedPane;
+import javax.swing.ListCellRenderer;
 
 /**
  *
@@ -36,13 +44,24 @@ public class mainForm extends javax.swing.JFrame {
 
         tabs = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        myPlrsBox = new javax.swing.JComboBox();
+        myPlrsBox = new DisableItemComboBox();
         chooseActionCB = new javax.swing.JComboBox();
         doSmthPlur = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tabs.setMinimumSize(new java.awt.Dimension(5, 100));
+        tabs.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabsStateChanged(evt);
+            }
+        });
+
+        myPlrsBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myPlrsBoxActionPerformed(evt);
+            }
+        });
 
         chooseActionCB.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "New", "Intersect", "Join" }));
         chooseActionCB.addActionListener(new java.awt.event.ActionListener() {
@@ -51,7 +70,12 @@ public class mainForm extends javax.swing.JFrame {
             }
         });
 
-        doSmthPlur.setText("Add Plurality");
+        doSmthPlur.setText("New");
+        doSmthPlur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doSmthPlurActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -106,32 +130,54 @@ public class mainForm extends javax.swing.JFrame {
     private void chooseActionCBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseActionCBActionPerformed
         String st = (String) chooseActionCB.getSelectedItem();
         doSmthPlur.setText(st);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chooseActionCBActionPerformed
+
+    private void doSmthPlurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doSmthPlurActionPerformed
+        String st = doSmthPlur.getText();
         switch (st) {
             case "New": {
-                doSmthPlur.addActionListener(ae -> addNewPlur());
-                
+                addNewPlur();
                 break;
             }
 
             case "Intersect": {
+                Instersect();
                 break;
             }
             case "Join": {
-                doSmthPlur.addActionListener(ae -> Join());
+                Join();
                 break;
             }
-
-            default:
-                throw new AssertionError();
         }
+    }//GEN-LAST:event_doSmthPlurActionPerformed
 
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chooseActionCBActionPerformed
+    private void myPlrsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myPlrsBoxActionPerformed
+
+    }//GEN-LAST:event_myPlrsBoxActionPerformed
+
+    private void tabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabsStateChanged
+        DisableItemComboBox d = (DisableItemComboBox) myPlrsBox;
+        HashSet<Integer> dis = new HashSet();
+        dis.add(tabs.getSelectedIndex());
+
+        d.setDisableIndex(dis);
+    }//GEN-LAST:event_tabsStateChanged
     private void Instersect() {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
 
-        String pluraName = "Instersect " + last;
-        model.addElement(pluraName);
+        PluraPane activeP, targetP, resultP;
+        activeP = (PluraPane) tabs.getSelectedComponent();
+        targetP = (PluraPane) tabs.getComponentAt(myPlrsBox.getSelectedIndex());
+
+        Plurality fst, snd;
+        fst = activeP.getPlur();
+        snd = targetP.getPlur();
+        Plurality result = fst.intersection(snd);
+
+        String pluraName = "Intersection (" + activeP.getName() + "," + targetP.getName() + ")";
+        resultP = new PluraPane(pluraName, result);
+        addToView(pluraName, resultP);
     }
 
     private void Join() {
@@ -145,26 +191,30 @@ public class mainForm extends javax.swing.JFrame {
         snd = targetP.getPlur();
         Plurality result = fst.join(snd);
 
-        String pluraName = "Join (" + activeP.getName() + "," + targetP.getName() + ")";
+        String pluraName = "Union (" + activeP.getName() + "," + targetP.getName() + ")";
         resultP = new PluraPane(pluraName, result);
-        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
-        model.addElement(pluraName);
-        tabs.add(resultP);
-        tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
-        tabs.getParent().revalidate();
+        addToView(pluraName, resultP);
     }
 
     private Integer last = 1;
 
     private void addNewPlur() {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
+
         String pluraName = "Plur " + last;
         last++;
-        model.addElement(pluraName);
-        PluraPane pp = new PluraPane(pluraName);
-        tabs.add(pp);
-        tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
-        tabs.getParent().revalidate();
+        PluraPane resultP = new PluraPane(pluraName);
+        addToView(pluraName, resultP);
+    }
+
+    void addToView(String pluraName, PluraPane resultP) {
+        EventQueue.invokeLater(() -> {
+            DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
+            model.addElement(pluraName);
+            tabs.add(resultP);
+            tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
+            tabs.getParent().revalidate();
+        });
+
     }
 
     public void print(String npl) {
@@ -215,6 +265,7 @@ public class mainForm extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void myInit() {
+
         PluraPane pp = new PluraPane("Plur " + last);
         tabs.add(pp);
         DefaultComboBoxModel model = new DefaultComboBoxModel((new Vector()));
@@ -222,10 +273,40 @@ public class mainForm extends javax.swing.JFrame {
         tabs.setTitleAt(0, "Plur " + last);
         last++;
         myPlrsBox.setModel(model);
-        doSmthPlur.addActionListener(ae -> addNewPlur());
+
         java.awt.EventQueue.invokeLater(() -> {
             tabs.getParent().revalidate();
         });
     }
 
 }
+
+//class MyComboBoxModel extends DefaultComboBoxModel {
+//
+//    JTabbedPane tb;
+//
+//    public MyComboBoxModel(JTabbedPane tabs) {
+//        this.tb = tabs;
+//
+//    }
+//
+//    @Override
+//    public void setSelectedItem(Object anObject) {
+//
+//        if (anObject != null) {
+//            String curTabName = tb.getSelectedComponent().getName();
+//            if (!anObject.toString().equals(curTabName)) {
+//
+//                super.setSelectedItem(anObject);
+//
+//            }
+//
+//        } else {
+//
+//            super.setSelectedItem(anObject);
+//
+//        }
+//
+//    }
+//
+//}
