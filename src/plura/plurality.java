@@ -8,8 +8,8 @@ package plura;
 import com.rits.cloning.Cloner;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 /**
  *
@@ -28,7 +28,7 @@ class Elem {
     @Override
     public boolean equals(Object o) {
         if ((o instanceof Elem == false)
-                || (((Elem) o).val.getClass() != this.type)) {
+                || (((Elem) o).type != this.type)) {
             return false;
         } else {
         }
@@ -66,13 +66,15 @@ abstract class Plurality implements Iterable<Elem> {
     abstract Plurality join(Plurality l);
 
     abstract Plurality intersection(Plurality l);
-    abstract boolean removeAll(Collection torm);
-    abstract boolean remove(Elem torm);
+
+    abstract boolean removeAll(Collection toRem);
+
+    abstract boolean remove(Elem toRem);
 }
 
-class arrayBasedPlur extends Plurality {
+class ListBasedPlur extends Plurality {
 
-    arrayBasedPlur() {
+    ListBasedPlur() {
         storage = new ArrayList<>();
 
     }
@@ -86,9 +88,7 @@ class arrayBasedPlur extends Plurality {
     boolean remove(Elem el) {
         return storage.remove(el);
     }
-    
-    
-    
+
     @Override
     boolean removeAll(Collection st) {
         return storage.removeAll(st);
@@ -121,8 +121,11 @@ class arrayBasedPlur extends Plurality {
     @Override
     Collection<String> printAll() {
         ArrayList<String> sl = new ArrayList();
-        storage.stream().forEach((el) -> {
-            sl.add(el.toString());
+        storage.stream().forEach(new Consumer<Elem>() {
+
+            public void accept(Elem el) {
+                sl.add(el.toString());
+            }
         });
         return sl;
     }
@@ -144,10 +147,11 @@ class arrayBasedPlur extends Plurality {
 
     @Override
     Plurality intersection(Plurality l) {
-        Plurality plur = new arrayBasedPlur();
+        Plurality plur = new ListBasedPlur();
+         Cloner cloner = new Cloner();
         for (Elem el : l) {
             if (this.contains(el)) {
-                plur.add(el);
+                plur.add(cloner.deepClone(el));
             }
         }
         return plur;
