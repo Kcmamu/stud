@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 class Elem {
 
     Class type;
-    Object val;
+    private final Object val;
 
     public Elem(Object val) {
         this.val = val;
@@ -31,8 +31,8 @@ class Elem {
                 || (((Elem) o).type != this.type)) {
             return false;
         } else {
+            return val.equals(((Elem) o).val);
         }
-        return val.equals(((Elem) o).val);
 
     }
 
@@ -55,13 +55,26 @@ abstract class Plurality implements Iterable<Elem> {
 
     abstract boolean isEmpty();
 
-    abstract boolean add(Elem el);
+    boolean add(Elem el) {
+        if (storage.contains(el)) {
+            return false;
+        }
+        storage.add(el);
+        return true;
+    }
+
+    Collection<String> printAll() {
+        ArrayList<String> sl = new ArrayList();
+        for (Elem el : storage) {
+            sl.add(el.toString());
+        }
+
+        return sl;
+    }
 
     abstract boolean contains(Elem el);
 
     abstract boolean containsAll(Plurality pl);
-
-    abstract Collection<String> printAll();
 
     abstract Plurality join(Plurality l);
 
@@ -95,15 +108,6 @@ class ListBasedPlur extends Plurality {
     }
 
     @Override
-    boolean add(Elem el) {
-        if (storage.contains(el)) {
-            return false;
-        }
-        storage.add(el);
-        return true;
-    }
-
-    @Override
     boolean contains(Elem el) {
         return storage.contains(el);
     }
@@ -116,18 +120,6 @@ class ListBasedPlur extends Plurality {
             }
         }
         return true;
-    }
-
-    @Override
-    Collection<String> printAll() {
-        ArrayList<String> sl = new ArrayList();
-        storage.stream().forEach(new Consumer<Elem>() {
-
-            public void accept(Elem el) {
-                sl.add(el.toString());
-            }
-        });
-        return sl;
     }
 
     @Override
@@ -148,7 +140,7 @@ class ListBasedPlur extends Plurality {
     @Override
     Plurality intersection(Plurality l) {
         Plurality plur = new ListBasedPlur();
-         Cloner cloner = new Cloner();
+        Cloner cloner = new Cloner();
         for (Elem el : l) {
             if (this.contains(el)) {
                 plur.add(cloner.deepClone(el));

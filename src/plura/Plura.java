@@ -16,8 +16,11 @@ public class Plura {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         java.awt.EventQueue.invokeLater(() -> {
-             new mainForm().setVisible(true);
+         java.awt.EventQueue.invokeLater(new Runnable() {
+
+             public void run() {
+                 new mainForm().setVisible(true);
+             }
          });
     }
     

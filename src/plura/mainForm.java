@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -206,15 +207,17 @@ public class mainForm extends javax.swing.JFrame {
         addToView(pluraName, resultP);
     }
 
-    void addToView(String pluraName, PluraPane resultP) {
-        EventQueue.invokeLater(() -> {
-            DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
-            model.addElement(pluraName);
-            tabs.add(resultP);
-            tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
-            tabs.getParent().revalidate();
-        });
+    void addToView(final String pluraName, final PluraPane resultP) {
+        EventQueue.invokeLater(new Runnable() {
 
+            public void run() {
+                DefaultComboBoxModel model = (DefaultComboBoxModel) myPlrsBox.getModel();
+                model.addElement(pluraName);
+                tabs.add(resultP);
+                tabs.setTitleAt(tabs.getComponentCount() - 1, pluraName);
+                tabs.getParent().revalidate();
+            }
+        });
     }
 
     public void print(String npl) {
@@ -274,39 +277,11 @@ public class mainForm extends javax.swing.JFrame {
         last++;
         myPlrsBox.setModel(model);
 
-        java.awt.EventQueue.invokeLater(() -> {
-            tabs.getParent().revalidate();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                tabs.getParent().revalidate();
+            }
         });
     }
-
 }
-
-//class MyComboBoxModel extends DefaultComboBoxModel {
-//
-//    JTabbedPane tb;
-//
-//    public MyComboBoxModel(JTabbedPane tabs) {
-//        this.tb = tabs;
-//
-//    }
-//
-//    @Override
-//    public void setSelectedItem(Object anObject) {
-//
-//        if (anObject != null) {
-//            String curTabName = tb.getSelectedComponent().getName();
-//            if (!anObject.toString().equals(curTabName)) {
-//
-//                super.setSelectedItem(anObject);
-//
-//            }
-//
-//        } else {
-//
-//            super.setSelectedItem(anObject);
-//
-//        }
-//
-//    }
-//
-//}

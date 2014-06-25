@@ -6,10 +6,7 @@
 package plura;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  *
@@ -26,7 +23,7 @@ public class PluraPane extends javax.swing.JPanel {
         initComponents();
         this.setName(name);
         nameLabel.setText(name);
-        pl = new arrayBasedPlur();
+        pl = new ListBasedPlur();
 
     }
 
@@ -157,43 +154,41 @@ public class PluraPane extends javax.swing.JPanel {
         Elem el = null;
         if (st.isEmpty() == false) {
             String type = (String) typeCbox.getSelectedItem();
-            switch (type) {
-                case "String": {
-                    el = new Elem(st);
-                    break;
+            try {
+                switch (type) {
+                    case "String": {
+                        el = new Elem(st);
+                        break;
+                    }
+                    case "Int": {
+                        el = new Elem(new Integer(Integer.valueOf(st)));
+                        break;
+                    }
+                    case "Float": {
+                        el = new Elem(new Float(Float.valueOf(st)));
+                        break;
+                    }
+                    default:
                 }
-                case "Int": {
-                    el = new Elem(new Integer(Integer.valueOf(st)));
-                    break;
+                if (el != null) {
+                    if (pl.add(el)) {
+                        this.statusLbl.setText("Элемент '" + el.toString() + "' добавлен");
+                        elemListPane.add(new ElementPane(el));
+                        elemAddField.requestFocus();
+                        elemAddField.setText("");
+                        elemListPane.revalidate();
+                    } else {
+                        statusLbl.setText("Элемент '" + el.toString() + "' не добавлен, повтор");
+                       
+                    }
                 }
-                case "Float": {
-                    el = new Elem(new Float(Float.valueOf(st)));
-                    break;
-                }
-                default:
-            }
-            if (el != null) {
-                if (pl.add(el)) {
-                    this.statusLbl.setText("Элемент '" + el.toString() + "' добавлен");
-                    elemListPane.add(new ElementPane(el));
-                    elemAddField.requestFocus();
-                    elemAddField.setText("");
-                    elemListPane.revalidate();
-                } else {
-                    statusLbl.setText("Элемент '" + el.toString() + "' не добавлен, повтор");
-                    // statusLbl.getParent().revalidate();
-                }
-
+            } catch (NumberFormatException j) {
+                this.statusLbl.setText("Элемент '" + st + "' не добавлен, неверный тип.");
             }
 
         }
     }//GEN-LAST:event_addElemBtnActionPerformed
 
-//            int[] sel = elemList.getSelectedIndices();
-//        for (int i = 0; i < sel.length; i++) {
-//            elemList.remove(sel[i]);
-//        }
-//        elemList.revalidate();
 
     private void remElemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remElemBtnActionPerformed
         ArrayList<Elem> a = new ArrayList();

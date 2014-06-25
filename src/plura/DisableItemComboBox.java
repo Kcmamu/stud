@@ -87,9 +87,10 @@ public class DisableItemComboBox< E> extends JComboBox< E> {
   }
   public void setDisableIndex(Set< Integer> set) {
     disableIndexSet.clear();
-    set.stream().forEach((i) -> {
-          disableIndexSet.add(i);
-      });
+    for (Integer i : set){
+         disableIndexSet.add(i);
+    }
+ 
   }
   @Override public void setPopupVisible(boolean v) {
     if (!v && isDisableIndex) {
